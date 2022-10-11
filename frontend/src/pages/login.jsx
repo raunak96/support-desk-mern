@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import { FaSignInAlt } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../redux/authSlice";
 
 const Login = () => {
 	const {
@@ -8,10 +10,15 @@ const Login = () => {
 		formState: { errors },
 	} = useForm();
 
-	const onSubmit = data => {
-		console.log(data);
-		console.log(errors);
+	const dispatch = useDispatch();
+	const { user, isLoading, isSuccess, message } = useSelector(
+		state => state.auth
+	);
+
+	const onSubmit = userData => {
+		dispatch(loginUser(userData));
 	};
+
 	return (
 		<>
 			<section className="heading">

@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import { FaUser } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../redux/authSlice";
 
 const Register = () => {
 	const {
@@ -9,9 +11,14 @@ const Register = () => {
 		formState: { errors },
 	} = useForm();
 
-	const onSubmit = data => {
-		console.log(data);
-		console.log(errors);
+	const dispatch = useDispatch();
+	const { user, isLoading, isSuccess, message } = useSelector(
+		state => state.auth
+	);
+
+	const onSubmit = formData => {
+		const { confirmPassword, ...userData } = formData;
+		dispatch(registerUser(userData));
 	};
 	return (
 		<>
