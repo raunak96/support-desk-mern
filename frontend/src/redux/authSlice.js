@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import authService from "./authService";
 
+const user = JSON.parse(localStorage.getItem("user"));
 const initialState = {
-	user: null,
-	isError: false,
-	isSuccess: false,
+	user: user ?? null,
 	isLoading: false,
-	message: "",
 };
 
 /**
@@ -18,7 +17,16 @@ const initialState = {
 export const registerUser = createAsyncThunk(
 	"auth/register",
 	async (user, thunkAPI) => {
-		console.log(user);
+		try {
+			return await authService.register(user);
+		} catch (error) {
+			const message =
+				error.response?.data?.message ??
+				error.message ??
+				error.toString() ??
+				"Internal Server Error";
+			return thunkAPI.rejectWithValue(message);
+		}
 	}
 );
 
@@ -40,7 +48,19 @@ export const authSlice = createSlice({
 	 *  or in other slices.
 	 * @param builder - provides different cases for our async fn like state pending or data fetch successful
 	 */
-	extraReducers: builder => {},
+	extraReducers: builder => {
+		builder
+			.addCase(registerUser.pending, state => {
+				state.isLoading = true;
+			})
+			.addCase(registerUser.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.user = action.payload;
+			})
+			.addCase(registerUser.rejected, state => {
+				state.isLoading = false;
+			});
+	},
 });
 
 export default authSlice.reducer;

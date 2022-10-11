@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../redux/authSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
 	const {
@@ -9,16 +11,26 @@ const Register = () => {
 		handleSubmit,
 		getValues,
 		formState: { errors },
+		reset,
 	} = useForm();
 
 	const dispatch = useDispatch();
-	const { user, isLoading, isSuccess, message } = useSelector(
-		state => state.auth
-	);
+	const navigate = useNavigate();
+
+	const { isLoading } = useSelector(state => state.auth);
 
 	const onSubmit = formData => {
 		const { confirmPassword, ...userData } = formData;
-		dispatch(registerUser(userData));
+		dispatch(registerUser(userData))
+			.unwrap()
+			.then(user => {
+				toast.success(`Registered ${user.name} as a user.`);
+				navigate("/");
+			})
+			.catch(errorMessage => {
+				toast.error(errorMessage);
+				reset();
+			});
 	};
 	return (
 		<>

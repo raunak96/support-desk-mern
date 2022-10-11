@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-	res.status(200).send({ msg: "Welcome to Support Desk API" });
+	res.status(200).send({ message: "Welcome to Support Desk API" });
 });
 
 // User Routes

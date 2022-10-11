@@ -11,9 +11,7 @@ const Login = () => {
 	} = useForm();
 
 	const dispatch = useDispatch();
-	const { user, isLoading, isSuccess, message } = useSelector(
-		state => state.auth
-	);
+	const { isLoading } = useSelector(state => state.auth);
 
 	const onSubmit = userData => {
 		dispatch(loginUser(userData));
