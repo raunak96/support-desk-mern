@@ -2,10 +2,13 @@ import express from "express";
 import { config } from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import errorHandler from "./middlewares/error.js";
+import connectToDB from "./config/db.js";
+import colors from "colors";
 
 config();
 const PORT = process.env.PORT || 5000;
 
+connectToDB();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -20,4 +23,4 @@ app.use("/api/users", userRoutes);
 // Error Handler
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Server started at ${PORT}`));
+app.listen(PORT, () => console.log(`Server started at ${PORT}`.rainbow.bold));
