@@ -15,7 +15,7 @@ const generateToken = id => {
 
 /**
  * @desc register User
- * @route "/api/user/register"
+ * @route "/api/users/register"
  * @access public
  */
 export const registerUser = wrap(async (req, res) => {
@@ -47,7 +47,7 @@ export const registerUser = wrap(async (req, res) => {
 
 /**
  * @desc login Users
- * @route "/api/user/login"
+ * @route "/api/users/login"
  * @access public
  */
 export const loginUser = wrap(async (req, res) => {
@@ -62,4 +62,18 @@ export const loginUser = wrap(async (req, res) => {
 		});
 	res.status(401);
 	throw new Error("Invalid user credentials");
+});
+
+/**
+ * @desc get Logged in user details
+ * @route /api/users/me
+ * @access protected
+ */
+export const getUserDetails = wrap(async (req, res) => {
+	const user = {
+		id: req.user._id,
+		name: req.user.name,
+		email: req.user.email,
+	};
+	return res.status(200).send(user);
 });
