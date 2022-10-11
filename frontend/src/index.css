@@ -38,7 +38,7 @@ h3 {
 .container {
     width: 100%;
     max-width: 960px;
-    margin: 0 auto;
+    margin: 1rem auto;
     padding: 0 20px;
     text-align: center;
 }
@@ -134,6 +134,18 @@ h3 {
     text-align: left;
     display: block;
     margin: 0 0 5px 3px;
+}
+.form p.error {
+    color: #bf1650;
+    text-align: left;
+    font-size:0.8rem;
+    font-weight: 100;
+    margin-bottom: 0.5rem;
+}
+
+.form p.error::before {
+    display: inline;
+    content: "⚠ ";
 }
 
 .btn {
