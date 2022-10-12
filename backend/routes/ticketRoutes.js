@@ -6,7 +6,7 @@ import {
 	getTickets,
 	updateTicket,
 } from "../controllers/ticketController.js";
-import { isAuthenticated } from "../middlewares/auth.js";
+import { isAuthenticated, ticketAuthorization } from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -23,12 +23,12 @@ router
 	.route("/:id")
 
 	/* Get particular Ticket */
-	.get(isAuthenticated, getTicketById)
+	.get(isAuthenticated, ticketAuthorization, getTicketById)
 
 	/* Delete a particular Ticket */
-	.delete(isAuthenticated, deleteTicket)
+	.delete(isAuthenticated, ticketAuthorization, deleteTicket)
 
 	/* Update a particular Ticket */
-	.put(isAuthenticated, updateTicket);
+	.put(isAuthenticated, ticketAuthorization, updateTicket);
 
 export default router;
