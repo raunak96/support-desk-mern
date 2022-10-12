@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { composeErrorMessage } from "../utils";
 import authService from "./authService";
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -20,11 +21,7 @@ export const registerUser = createAsyncThunk(
 		try {
 			return await authService.register(user);
 		} catch (error) {
-			const message =
-				error.response?.data?.message ??
-				error.message ??
-				error.toString() ??
-				"Internal Server Error";
+			const message = composeErrorMessage(error);
 			return thunkAPI.rejectWithValue(message);
 		}
 	}
@@ -33,9 +30,19 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
 	"auth/login",
 	async (user, thunkAPI) => {
-		console.log(user);
+		try {
+			return await authService.login(user);
+		} catch (error) {
+			const message = composeErrorMessage(error);
+			return thunkAPI.rejectWithValue(message);
+		}
 	}
 );
+
+export const logout = createAction("auth/logout", () => {
+	authService.logout();
+	return {};
+});
 
 export const authSlice = createSlice({
 	name: "auth",
@@ -59,6 +66,19 @@ export const authSlice = createSlice({
 			})
 			.addCase(registerUser.rejected, state => {
 				state.isLoading = false;
+			})
+			.addCase(loginUser.pending, state => {
+				state.isLoading = true;
+			})
+			.addCase(loginUser.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.user = action.payload;
+			})
+			.addCase(loginUser.rejected, state => {
+				state.isLoading = false;
+			})
+			.addCase(logout, state => {
+				state.user = null;
 			});
 	},
 });

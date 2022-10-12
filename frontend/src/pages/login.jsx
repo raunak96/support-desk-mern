@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import { FaSignInAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
 import { loginUser } from "../redux/authSlice";
 
 const Login = () => {
@@ -8,16 +11,29 @@ const Login = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
+		reset,
 	} = useForm();
 
 	const dispatch = useDispatch();
-	const { isLoading } = useSelector(state => state.auth);
+	const { isLoading, user } = useSelector(state => state.auth);
+	const navigate = useNavigate();
 
 	const onSubmit = userData => {
-		dispatch(loginUser(userData));
+		dispatch(loginUser(userData))
+			.unwrap()
+			.then(user => {
+				toast.success(`Welcome back ${user.name}!.`);
+				navigate("/");
+			})
+			.catch(errorMessage => {
+				toast.error(errorMessage);
+				reset();
+			});
 	};
-
-	return (
+	if (isLoading) return <Spinner />;
+	return user ? (
+		<Navigate to="/" />
+	) : (
 		<>
 			<section className="heading">
 				<h1>

@@ -2,8 +2,9 @@ import { useForm } from "react-hook-form";
 import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../redux/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
 
 const Register = () => {
 	const {
@@ -17,7 +18,7 @@ const Register = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const { isLoading } = useSelector(state => state.auth);
+	const { isLoading, user } = useSelector(state => state.auth);
 
 	const onSubmit = formData => {
 		const { confirmPassword, ...userData } = formData;
@@ -32,7 +33,10 @@ const Register = () => {
 				reset();
 			});
 	};
-	return (
+	if (isLoading) return <Spinner />;
+	return user ? (
+		<Navigate to="/" />
+	) : (
 		<>
 			<section className="heading">
 				<h1>
