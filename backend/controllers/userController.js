@@ -1,11 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-// this function wraps around async function and allows us to use async await otherwise we need to use then.catch
-const wrap =
-	fn =>
-	(...args) =>
-		fn(...args).catch(args[2]);
+import wrap from "../utils.js";
 
 const generateToken = id => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -15,7 +11,7 @@ const generateToken = id => {
 
 /**
  * @desc register User
- * @route "/api/users/register"
+ * @route POST /api/users/register
  * @access public
  */
 export const registerUser = wrap(async (req, res) => {
@@ -47,7 +43,7 @@ export const registerUser = wrap(async (req, res) => {
 
 /**
  * @desc login Users
- * @route "/api/users/login"
+ * @route POST /api/users/login
  * @access public
  */
 export const loginUser = wrap(async (req, res) => {
@@ -66,7 +62,7 @@ export const loginUser = wrap(async (req, res) => {
 
 /**
  * @desc get Logged in user details
- * @route /api/users/me
+ * @route GET /api/users/me
  * @access protected
  */
 export const getUserDetails = wrap(async (req, res) => {

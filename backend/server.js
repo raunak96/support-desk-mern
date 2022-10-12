@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
+import ticketRoutes from "./routes/ticketRoutes.js";
 import errorHandler from "./middlewares/error.js";
 import connectToDB from "./config/db.js";
 import colors from "colors";
@@ -19,6 +20,9 @@ app.get("/", (req, res) => {
 
 // User Routes
 app.use("/api/users", userRoutes);
+
+// Ticket Routes
+app.use("/api/tickets", ticketRoutes);
 
 // Error Handler
 app.use(errorHandler);

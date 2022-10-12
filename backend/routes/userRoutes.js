@@ -3,7 +3,7 @@ import {
 	getUserDetails,
 	loginUser,
 	registerUser,
-} from "../controllers/userControllers.js";
+} from "../controllers/userController.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 
 /* SignUp Route */
