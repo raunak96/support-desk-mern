@@ -64,7 +64,7 @@ const Ticket = () => {
 				<hr />
 				<h2>Notes</h2>
 			</header>
-			<NotesList ticketId={ticketId} />
+			<NotesList ticketId={ticketId} status={ticket.status} />
 			{ticket.status !== "closed" && (
 				<button
 					onClick={handleTicketClose}

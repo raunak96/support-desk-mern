@@ -135,7 +135,7 @@ h3 {
     display: block;
     margin: 0 0 5px 3px;
 }
-.form p.error {
+.form p.error,.form-group p.error {
     color: #bf1650;
     text-align: left;
     font-size:0.8rem;
@@ -143,7 +143,7 @@ h3 {
     margin-bottom: 0.5rem;
 }
 
-.form p.error::before {
+.form p.error::before,.form-group p.error::before{
     display: inline;
     content: "⚠ ";
 }
@@ -162,6 +162,10 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.btn:disabled{
+    opacity: 0.3;
+    cursor:not-allowed;
 }
 
 .btn svg {

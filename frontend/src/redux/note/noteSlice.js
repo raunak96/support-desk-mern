@@ -19,6 +19,18 @@ export const getNotes = createAsyncThunk(
 		}
 	}
 );
+export const createNote = createAsyncThunk(
+	"note/new",
+	async ({ ticketId, noteData }, thunkAPI) => {
+		try {
+			const token = thunkAPI.getState().auth.user.token;
+			return await noteService.createNote({ token, ticketId, noteData });
+		} catch (error) {
+			const message = composeErrorMessage(error);
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
 
 export const noteSlice = createSlice({
 	name: "note",
@@ -36,6 +48,10 @@ export const noteSlice = createSlice({
 			.addCase(getNotes.rejected, state => {
 				state.notes = null;
 				state.isLoading = false;
+			})
+			.addCase(createNote.fulfilled, (state, action) => {
+				if (!state.notes) state.notes = [action.payload];
+				else state.notes.push(action.payload);
 			});
 	},
 });

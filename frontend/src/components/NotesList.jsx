@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getNotes } from "../redux/note/noteSlice";
 import NoteItem from "./NoteItem";
+import NoteModalForm from "./NoteModalForm";
 import Spinner from "./Spinner";
 
-const NotesList = ({ ticketId }) => {
+const NotesList = ({ ticketId, status }) => {
 	const { notes, isLoading } = useSelector(state => state.note);
 	const dispatch = useDispatch();
 
@@ -16,6 +17,7 @@ const NotesList = ({ ticketId }) => {
 		<Spinner />
 	) : notes ? (
 		<>
+			{status !== "closed" && <NoteModalForm ticketId={ticketId} />}
 			{notes.map(note => (
 				<NoteItem key={note._id} note={note} />
 			))}
