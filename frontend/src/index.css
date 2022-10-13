@@ -49,7 +49,7 @@ h3 {
     align-items: center;
     padding: 20px 0;
     border-bottom: 1px solid #e6e6e6;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 .header ul {
@@ -78,7 +78,7 @@ h3 {
 .heading {
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     padding: 0 20px;
 }
 
@@ -237,7 +237,11 @@ h3 {
 .ticket-headings {
     font-weight: 700;
 }
-
+.ticket-info{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+}
 .status {
     background-color: #333;
     color: #fff;
@@ -410,10 +414,21 @@ footer {
 
     .ticket-created h2,
     .heading h1 {
-        font-size: 2rem;
+        font-size: 1rem;
     }
 
     .heading p {
         font-size: 1.5rem;
     }
+}
+
+@media (max-width:850px) {
+    .ticket-created h2,
+        .heading h1 {
+            font-size: 2rem;
+        }
+    .ticket-info {
+            flex-direction: column;
+            text-align:center;
+        }
 }

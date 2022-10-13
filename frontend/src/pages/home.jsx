@@ -8,7 +8,7 @@ const Home = () => {
 				<h1>What do you need help with?</h1>
 				<p>Please choose from an option below.</p>
 			</section>
-			<Link to="/new-ticket" className="btn btn-reverse btn-block">
+			<Link to="tickets/new" className="btn btn-reverse btn-block">
 				<FaQuestionCircle /> Create a new ticket
 			</Link>
 			<Link to="/tickets" className="btn btn-block">
