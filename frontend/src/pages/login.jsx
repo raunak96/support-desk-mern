@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
-import { loginUser } from "../redux/authSlice";
+import { loginUser } from "../redux/auth/authSlice";
 
 const Login = () => {
 	const {

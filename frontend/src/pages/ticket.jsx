@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import BackButton from "../components/BackButton";
 import { closeTicket, getTicket } from "../redux/ticket/ticketSlice";
+import NotesList from "../components/NotesList";
 
 const Ticket = () => {
 	const { ticket } = useSelector(state => state.ticket);
@@ -60,7 +61,10 @@ const Ticket = () => {
 					<h3>Description of Issue</h3>
 					<p>{ticket.description}</p>
 				</div>
+				<hr />
+				<h2>Notes</h2>
 			</header>
+			<NotesList ticketId={ticketId} />
 			{ticket.status !== "closed" && (
 				<button
 					onClick={handleTicketClose}

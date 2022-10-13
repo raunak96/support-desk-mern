@@ -32,21 +32,23 @@ export const isAuthenticated = wrap(async (req, res, next) => {
 	}
 });
 
-export const ticketAuthorization = wrap(async (req, res, next) => {
-	const ticketId = req.params.id;
-	if (!mongoose.isValidObjectId(ticketId)) {
-		res.status(422);
-		throw new Error("This resource does not exist");
-	}
-	const ticket = await Ticket.findById(ticketId);
-	if (!ticket) {
-		res.status(404);
-		throw new Error("Ticket not found");
-	}
-	if (ticket.user.toString() !== req.user._id.toString()) {
-		res.status(401);
-		throw new Error("Not authorized");
-	}
-	req.ticket = ticket;
-	next();
-});
+export const ticketAuthorization =
+	(isAuthenticated,
+	wrap(async (req, res, next) => {
+		const ticketId = req.params.ticketId;
+		if (!mongoose.isValidObjectId(ticketId)) {
+			res.status(422);
+			throw new Error("This resource does not exist");
+		}
+		const ticket = await Ticket.findById(ticketId);
+		if (!ticket) {
+			res.status(404);
+			throw new Error("Ticket not found");
+		}
+		if (ticket.user.toString() !== req.user._id.toString()) {
+			res.status(401);
+			throw new Error("Not authorized");
+		}
+		req.ticket = ticket;
+		next();
+	}));

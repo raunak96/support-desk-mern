@@ -1,10 +1,11 @@
 import express from "express";
 import { config } from "dotenv";
-import userRoutes from "./routes/userRoutes.js";
-import ticketRoutes from "./routes/ticketRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+import ticketRouter from "./routes/ticketRoutes.js";
 import errorHandler from "./middlewares/error.js";
 import connectToDB from "./config/db.js";
 import colors from "colors";
+import { isAuthenticated } from "./middlewares/auth.js";
 
 config();
 const PORT = process.env.PORT || 5000;
@@ -19,10 +20,10 @@ app.get("/", (req, res) => {
 });
 
 // User Routes
-app.use("/api/users", userRoutes);
+app.use("/api/users", userRouter);
 
 // Ticket Routes
-app.use("/api/tickets", ticketRoutes);
+app.use("/api/tickets", isAuthenticated, ticketRouter);
 
 // Error Handler
 app.use(errorHandler);

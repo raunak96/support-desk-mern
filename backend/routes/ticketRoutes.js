@@ -6,29 +6,24 @@ import {
 	getTickets,
 	updateTicket,
 } from "../controllers/ticketController.js";
-import { isAuthenticated, ticketAuthorization } from "../middlewares/auth.js";
+import { ticketAuthorization } from "../middlewares/auth.js";
+import noteRouter from "./noteRoutes.js";
 
 const router = Router();
 
+// /api/tickets
+router.route("/").get(getTickets).post(createTicket);
+
+/* Operations on ticket of given id */
+// /api/tickets/:ticketId
 router
-	.route("/")
+	.route("/:ticketId")
+	.get(ticketAuthorization, getTicketById)
+	.delete(ticketAuthorization, deleteTicket)
+	.put(ticketAuthorization, updateTicket);
 
-	/* Get Tickets for current User */
-	.get(isAuthenticated, getTickets)
-
-	/* Create a new Ticket */
-	.post(isAuthenticated, createTicket);
-
-router
-	.route("/:id")
-
-	/* Get particular Ticket */
-	.get(isAuthenticated, ticketAuthorization, getTicketById)
-
-	/* Delete a particular Ticket */
-	.delete(isAuthenticated, ticketAuthorization, deleteTicket)
-
-	/* Update a particular Ticket */
-	.put(isAuthenticated, ticketAuthorization, updateTicket);
+/* Operations for Notes in a ticket-> when this endpoint hits re-route to notes route  */
+// /api/tickets/:ticketId/notes/*
+router.use("/:ticketId/notes", ticketAuthorization, noteRouter);
 
 export default router;

@@ -12,7 +12,7 @@ const Redirect = ({ errorMessage, redirectPath }) => {
 
 Redirect.defaultProps = {
 	errorMessage: "You need to login first!",
-	redirectPath: "/",
+	redirectPath: "/login",
 };
 Redirect.propTypes = {
 	errorMessage: PropTypes.string,

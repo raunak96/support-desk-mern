@@ -61,7 +61,7 @@ export const deleteTicket = wrap(async (req, res) => {
  * @access Private
  */
 export const updateTicket = wrap(async (req, res) => {
-	const ticketId = req.params.id;
+	const ticketId = req.params.ticketId;
 	/* {new:true} returns updatedDoc instead of original which is default  */
 	const updatedTicket = await Ticket.findByIdAndUpdate(ticketId, req.body, {
 		new: true,
