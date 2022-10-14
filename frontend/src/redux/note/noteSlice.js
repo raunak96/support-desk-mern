@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { failed, idle, loading, success } from "../../constants/status";
 import { composeErrorMessage } from "../../utils";
 import noteService from "./noteService";
 
 const initialState = {
 	notes: null,
 	isLoading: false,
+	status: idle,
 };
 
 export const getNotes = createAsyncThunk(
@@ -38,16 +40,15 @@ export const noteSlice = createSlice({
 	extraReducers: builder => {
 		builder
 			.addCase(getNotes.pending, (state, action) => {
-				state.notes = [];
-				state.isLoading = true;
+				state.status = loading;
 			})
 			.addCase(getNotes.fulfilled, (state, action) => {
 				state.notes = action.payload;
-				state.isLoading = false;
+				state.status = success;
 			})
 			.addCase(getNotes.rejected, state => {
 				state.notes = null;
-				state.isLoading = false;
+				state.status = failed;
 			})
 			.addCase(createNote.fulfilled, (state, action) => {
 				if (!state.notes) state.notes = [action.payload];
