@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { failed, idle, loading, success } from "../../constants/status";
 import { composeErrorMessage } from "../../utils";
+import { logout } from "../auth/authSlice";
 import noteService from "./noteService";
 
 const initialState = {
 	notes: null,
-	isLoading: false,
 	status: idle,
 };
 
@@ -51,8 +51,13 @@ export const noteSlice = createSlice({
 				state.status = failed;
 			})
 			.addCase(createNote.fulfilled, (state, action) => {
-				if (!state.notes) state.notes = [action.payload];
-				else state.notes.push(action.payload);
+				if (state.notes) state.notes.push(action.payload);
+			})
+			// Here coz of extraReducers, we are able to change state of noteSlice, when logout action in
+			// authSlice is run
+			.addCase(logout, state => {
+				state.notes = null;
+				state.status = "idle";
 			});
 	},
 });

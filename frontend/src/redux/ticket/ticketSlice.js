@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { failed, idle, loading, success } from "../../constants/status";
 import { composeErrorMessage } from "../../utils";
+import { logout } from "../auth/authSlice";
 import ticketService from "./ticketService";
 
 const initialState = {
@@ -86,6 +87,9 @@ export const ticketSlice = createSlice({
 			.addCase(getTicket.rejected, state => {
 				state.ticket = null;
 			})
+			.addCase(generateTicket.fulfilled, (state, action) => {
+				if (state.tickets) state.tickets.push(action.payload);
+			})
 			.addCase(closeTicket.fulfilled, (state, action) => {
 				state.ticket = action.payload;
 				if (state.tickets)
@@ -94,6 +98,13 @@ export const ticketSlice = createSlice({
 							? action.payload
 							: ticket
 					);
+			})
+			// Here coz of extraReducers, we are able to change state of ticketSlice, when logout action in
+			// authSlice is run
+			.addCase(logout, state => {
+				state.tickets = null;
+				state.status = "idle";
+				state.ticket = null;
 			});
 	},
 });
