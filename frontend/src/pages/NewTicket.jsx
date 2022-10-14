@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,33 +10,27 @@ const NewTicket = () => {
 	const {
 		user: { name, email },
 	} = useSelector(state => state.auth);
-	const [isLoading, setIsLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
-		reset,
+		formState: { errors, isSubmitting },
 	} = useForm();
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const onSubmit = async ticketData => {
 		try {
-			setIsLoading(true);
 			await dispatch(generateTicket(ticketData)).unwrap();
 			toast.success("New ticket created!");
 			navigate("/tickets");
 		} catch (errorMessage) {
 			toast.error(errorMessage);
-		} finally {
-			reset();
-			setIsLoading(false);
 		}
 	};
 
 	return (
 		<>
-			{isLoading && <Spinner />}
+			{isSubmitting && <Spinner />}
 			<BackButton />
 			<section className="heading">
 				<h1>Create new Ticket</h1>
