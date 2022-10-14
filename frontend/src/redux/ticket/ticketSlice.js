@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { failed, idle, loading, success } from "../../constants/status";
 import { composeErrorMessage } from "../../utils";
 import ticketService from "./ticketService";
 
 const initialState = {
 	tickets: null,
 	ticket: null,
+	status: idle,
 };
 
 export const generateTicket = createAsyncThunk(
@@ -64,11 +66,16 @@ export const ticketSlice = createSlice({
 	initialState,
 	extraReducers: builder => {
 		builder
+			.addCase(getTickets.pending, (state, action) => {
+				state.status = loading;
+			})
 			.addCase(getTickets.fulfilled, (state, action) => {
 				state.tickets = action.payload;
+				state.status = success;
 			})
 			.addCase(getTickets.rejected, state => {
 				state.tickets = null;
+				state.status = failed;
 			})
 			.addCase(getTicket.pending, (state, action) => {
 				state.ticket = null;

@@ -77,9 +77,6 @@ export const authSlice = createSlice({
 			.addCase(loginUser.rejected, state => {
 				state.isLoading = false;
 			});
-		/* .addCase(logout, state => {
-				state.user = null;
-			}); */
 	},
 });
 export const { logout } = authSlice.actions;
